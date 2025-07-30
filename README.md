@@ -2,14 +2,6 @@
 
 A reverse proxy that translates OpenAI API requests to Azure OpenAI Service, allowing you to use Azure OpenAI models with any OpenAI-compatible client. Available in both **Python (Flask)** and **Node.js (Express)** implementations.
 
-## Features
-
-- **OpenAI API Compatibility**: Accepts standard OpenAI API requests and forwards them to Azure OpenAI Service
-- **Streaming Support**: Full support for streaming chat completions
-- **CORS Enabled**: Cross-origin requests supported for web applications
-- **Authorization**: Built-in API key authentication for security
-- **Error Handling**: Comprehensive error handling with proper HTTP status codes
-- **Dual Implementation**: Choose between Python/Flask or Node.js/Express
 
 ## Prerequisites
 
