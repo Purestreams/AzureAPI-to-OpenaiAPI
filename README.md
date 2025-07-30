@@ -2,6 +2,38 @@
 
 A reverse proxy that translates OpenAI API requests to Azure OpenAI Service, allowing you to use Azure OpenAI models with any OpenAI-compatible client. Available in both **Python (Flask)** and **Node.js (Express)** implementations.
 
+The **Node.js** version supports multiple models and allows you to specify the model in the request body, while the **Python** version is a simpler implementation that uses a single deployment.
+
+The API will emulate a endpoint of /v1/models, allowing you to list available models and make chat completions requests similar to the OpenAI API.
+
+```json
+{
+  "object": "list",
+  "data": [
+    {
+      "id": "Phi-4",
+      "object": "model",
+      "created": 1686935002,
+      "owned_by": "Microsoft"
+    },
+    {
+      "id": "gpt-4",
+      "object": "model",
+      "created": 1686935002,
+      "owned_by": "openai"
+    },
+    {
+      "id": "gpt-3.5-turbo",
+      "object": "model",
+      "created": 1686935002,
+      "owned_by": "openai"
+    },
+    ...
+  ]
+}
+```
+
+**Note**: When using different models, ensure you set the correct API version in your environment variables or code. The default API version is set to `2024-12-01-preview`, which is compatible with most of the latest Azure OpenAI models.
 
 ## Prerequisites
 
