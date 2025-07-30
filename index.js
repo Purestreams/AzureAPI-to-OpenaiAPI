@@ -13,6 +13,15 @@ app.use(cors());
 
 // Get Azure OpenAI Service configuration from environment variables
 // In a production environment, these should be set as environment variables.
+<<<<<<< HEAD
+=======
+const AZURE_OPENAI_ENDPOINT = process.env.AZURE_OPENAI_ENDPOINT || ""; // Replace with your actual endpoint
+const AZURE_OPENAI_API_KEY = process.env.AZURE_OPENAI_API_KEY || ""; // Replace with your actual API key
+const AZURE_OPENAI_DEPLOYMENT = process.env.AZURE_OPENAI_DEPLOYMENT || "gpt-4.1-nano"; // Replace with your actual deployment name
+const AZURE_OPENAI_API_VERSION = process.env.AZURE_OPENAI_API_VERSION || "2024-05-01-preview"; // Replace with your actual API version
+
+const private_password = process.env.PRIVATE_PASSWORD || ""; // Define a private password for authorization
+>>>>>>> 31ac776 (update)
 
 // Check for required configuration
 if (!AZURE_OPENAI_ENDPOINT || !AZURE_OPENAI_API_KEY || !AZURE_OPENAI_DEPLOYMENT) {
