@@ -20,7 +20,7 @@ A Flask-based reverse proxy that translates OpenAI API requests to Azure OpenAI 
 
 1. Clone this repository:
 ```bash
-git clone https://github.com/Purestreams/AzureAPI-to-Openai.git
+git clone https://github.com/Purestreams/AzureAPI-to-OpenaiAPI.git
 cd AzureAPI-to-Openai
 ```
 
