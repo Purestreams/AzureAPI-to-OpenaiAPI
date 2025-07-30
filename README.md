@@ -1,6 +1,6 @@
 # Azure to OpenAI API Proxy
 
-A Flask-based reverse proxy that translates OpenAI API requests to Azure OpenAI Service, allowing you to use Azure OpenAI models with any OpenAI-compatible client.
+A reverse proxy that translates OpenAI API requests to Azure OpenAI Service, allowing you to use Azure OpenAI models with any OpenAI-compatible client. Available in both **Python (Flask)** and **Node.js (Express)** implementations.
 
 ## Features
 
@@ -9,10 +9,12 @@ A Flask-based reverse proxy that translates OpenAI API requests to Azure OpenAI 
 - **CORS Enabled**: Cross-origin requests supported for web applications
 - **Authorization**: Built-in API key authentication for security
 - **Error Handling**: Comprehensive error handling with proper HTTP status codes
+- **Dual Implementation**: Choose between Python/Flask or Node.js/Express
 
 ## Prerequisites
 
-- Python 3.7 or higher
+- **For Python version**: Python 3.7 or higher
+- **For Node.js version**: Node.js 14 or higher
 - Azure OpenAI Service subscription
 - Azure OpenAI deployment (e.g., GPT-4, GPT-3.5-turbo)
 
@@ -24,15 +26,41 @@ git clone https://github.com/Purestreams/AzureAPI-to-OpenaiAPI.git
 cd AzureAPI-to-Openai
 ```
 
-2. Install required dependencies:
+2. Choose your preferred implementation:
+
+### Option A: Python (Flask) Implementation
+
+Install Python dependencies:
 ```bash
 pip install flask flask-cors requests
 ```
 
+### Option B: Node.js (Express) Implementation
+
+Install Node.js dependencies:
+```bash
+npm install express cors axios
+```
+
 ## Configuration
 
-Before running the application, you need to configure your Azure OpenAI Service details in `main.py`:
+You can configure the proxy using either direct code modification or environment variables (recommended for production).
 
+### Method 1: Environment Variables (Recommended)
+
+Set the following environment variables:
+
+```bash
+export AZURE_OPENAI_ENDPOINT="https://your-resource-name.openai.azure.com"
+export AZURE_OPENAI_API_KEY="your_azure_openai_api_key_here"
+export AZURE_OPENAI_DEPLOYMENT="your-deployment-name"
+export AZURE_OPENAI_API_VERSION="2024-05-01-preview"
+export PRIVATE_PASSWORD="your_private_password_here"
+```
+
+### Method 2: Direct Code Modification
+
+#### For Python (main.py):
 ```python
 # Replace these placeholders with your actual values
 AZURE_OPENAI_ENDPOINT = "https://your-resource-name.openai.azure.com"
@@ -40,6 +68,16 @@ AZURE_OPENAI_API_KEY = "your_azure_openai_api_key_here"
 AZURE_OPENAI_DEPLOYMENT = "your-deployment-name"  # e.g., "gpt-4"
 AZURE_OPENAI_API_VERSION = "2024-05-01-preview"
 private_password = "your_private_password_here"
+```
+
+#### For Node.js (index.js):
+The Node.js version uses environment variables by default, but you can modify the fallback values:
+```javascript
+const AZURE_OPENAI_ENDPOINT = process.env.AZURE_OPENAI_ENDPOINT || "your-endpoint-here";
+const AZURE_OPENAI_API_KEY = process.env.AZURE_OPENAI_API_KEY || "your-key-here";
+const AZURE_OPENAI_DEPLOYMENT = process.env.AZURE_OPENAI_DEPLOYMENT || "your-deployment-here";
+const AZURE_OPENAI_API_VERSION = process.env.AZURE_OPENAI_API_VERSION || "2024-05-01-preview";
+const private_password = process.env.PRIVATE_PASSWORD || "your-password-here";
 ```
 
 ### Getting Azure OpenAI Configuration
@@ -53,13 +91,19 @@ private_password = "your_private_password_here"
 
 ### Starting the Server
 
-Run the Flask application:
+Choose your preferred implementation:
 
+#### Option A: Python (Flask)
 ```bash
 python main.py
 ```
 
-The server will start on `http://0.0.0.0:5005` by default.
+#### Option B: Node.js (Express)
+```bash
+node index.js
+```
+
+Both servers will start on `http://0.0.0.0:5005` by default.
 
 ### Making API Requests
 
@@ -168,7 +212,7 @@ Returns the Azure OpenAI response in OpenAI API format.
 
 ## Production Deployment
 
-For production use, consider:
+### Python (Flask) Production
 
 1. **Use a production WSGI server** like Gunicorn or uWSGI:
 ```bash
@@ -184,7 +228,42 @@ AZURE_OPENAI_API_KEY = os.getenv('AZURE_OPENAI_API_KEY')
 # ... etc
 ```
 
-3. **Reverse proxy** with nginx or similar for SSL termination and load balancing
+### Node.js (Express) Production
+
+1. **Use PM2 for process management**:
+```bash
+npm install -g pm2
+pm2 start index.js --name "azure-openai-proxy"
+pm2 startup
+pm2 save
+```
+
+2. **Set production environment**:
+```bash
+export NODE_ENV=production
+```
+
+3. **Use environment variables** (already implemented in the Node.js version)
+
+### General Production Considerations
+
+1. **Reverse proxy** with nginx or similar for SSL termination and load balancing
+2. **HTTPS**: Always use HTTPS in production environments
+3. **Rate limiting**: Implement rate limiting for production use
+4. **Monitoring**: Set up logging and monitoring for your chosen implementation
+
+## Implementation Comparison
+
+| Feature | Python (Flask) | Node.js (Express) |
+|---------|----------------|-------------------|
+| **Performance** | Good for I/O bound tasks | Excellent for concurrent connections |
+| **Memory Usage** | Moderate | Lower |
+| **Ecosystem** | Rich Python ecosystem | Rich npm ecosystem |
+| **Configuration** | Direct code or env vars | Environment variables (recommended) |
+| **Production Ready** | Use with Gunicorn/uWSGI | Use with PM2 or similar |
+| **Deployment** | Traditional server deployment | Cloud-native friendly |
+
+Choose based on your team's expertise and infrastructure preferences.
 
 ## Troubleshooting
 
@@ -193,10 +272,24 @@ AZURE_OPENAI_API_KEY = os.getenv('AZURE_OPENAI_API_KEY')
 1. **401 Unauthorized**: Check that your private password matches in both client and server
 2. **503 Service Unavailable**: Verify your Azure OpenAI endpoint and API key are correct
 3. **500 Internal Server Error**: Check the server logs for specific error details
+4. **Module/Package not found**: 
+   - **Python**: Run `pip install flask flask-cors requests`
+   - **Node.js**: Run `npm install express cors axios`
+5. **Port already in use**: Change the port in the code or stop the conflicting service
+
+### Implementation-Specific Issues
+
+#### Python (Flask)
+- **Import errors**: Ensure you're using the correct Python environment
+- **WSGI issues**: Use `gunicorn` for production instead of the built-in server
+
+#### Node.js (Express)
+- **Environment variables**: The Node.js version requires environment variables to be set
+- **Process management**: Use PM2 or similar for production deployments
 
 ### Logging
 
-The application includes error logging. Check the console output for detailed error messages.
+Both implementations include error logging. Check the console output for detailed error messages.
 
 ## Contributing
 
@@ -212,5 +305,6 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 
 ## Acknowledgments
 
-- Built with Flask and the Azure OpenAI Service
-- Designed for compatibility with OpenAI API clients
+- Available in both Python (Flask) and Node.js (Express) implementations
+- Built for Azure OpenAI Service compatibility
+- Designed for seamless integration with OpenAI API clients
