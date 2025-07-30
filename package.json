@@ -1,0 +1,25 @@
+{
+  "name": "azureapi-to-openai",
+  "version": "1.0.0",
+  "description": "A Flask-based reverse proxy that translates OpenAI API requests to Azure OpenAI Service, allowing you to use Azure OpenAI models with any OpenAI-compatible client.",
+  "homepage": "https://github.com/Purestreams/AzureAPI-to-Openai#readme",
+  "bugs": {
+    "url": "https://github.com/Purestreams/AzureAPI-to-Openai/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Purestreams/AzureAPI-to-Openai.git"
+  },
+  "license": "ISC",
+  "author": "Mio",
+  "type": "commonjs",
+  "main": "index.js",
+  "scripts": {
+  "start": "node index.js"
+  },
+  "dependencies": {
+    "axios": "^1.11.0",
+    "cors": "^2.8.5",
+    "express": "^5.1.0"
+  }
+}
