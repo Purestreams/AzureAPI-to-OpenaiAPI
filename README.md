@@ -1,4 +1,4 @@
-# Azure OpenAI to OpenAI API Proxy
+# Azure to OpenAI API Proxy
 
 A Flask-based reverse proxy that translates OpenAI API requests to Azure OpenAI Service, allowing you to use Azure OpenAI models with any OpenAI-compatible client.
 
